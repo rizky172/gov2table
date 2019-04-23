@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://api.kl2.web.id/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://api.kl2.web.id/js/vue.js"></script>
+    <script src="https://api.kl2.web.id/js/httpVueLoader.js"></script>
+    <script src="https://api.kl2.web.id/js/axios.min.js"></script>
+    <script type="text/javascript">
+        const eventBus = new Vue();
+    </script>
+  </head>
+  <body>
+<div id="app">
+    <section class="hero is-primary">
+    	<div> </div>
+    </section>
+        
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+              <div class="column is-narrow">
+                <div style="width: 200px;"></div>
+              </div>
+              <div class="column">
+                <h1 class="title">Table Component</h1>
+                <h2 class="subtitle">
+                  Contoh Data Tabel Tematik
+                </h2>                                
+                <span>&nbsp;</span>
+                  <gov2navbreadcrumb :path-url="pathurl"></gov2navbreadcrumb>
+                <span>&nbsp;</span>
+                <div>
+                  <gov2notification></gov2notification>
+                </div>
+                <span>&nbsp;</span>
+                <div>
+                    <div class="field is-horizontal">
+                      <div class="field-body">
+                        <div class="field is-grouped is-grouped-right">
+                            <gov2search></gov2search>
+                        </div>
+                      </div>
+                    </div>
+                </div>          
+                <span>&nbsp;</span>
+                <div>
+                    <gov2table
+                        :is-active="true"
+                        :get-url="geturl"
+                        :columns="['id', 'nama', 'kode']"
+                        :filter-key="searchQuery"
+                        :readonly="true"
+                        :item-per-page="itemPerPage">
+                    </gov2table>
+                </div>          
+                <span>&nbsp;</span>
+                 <div class="columns" v-if="isTableActive">
+                    <div class="column">
+                        <gov2itemperpage :interval="interval"></gov2itemperpage>  
+                      </div>
+                      <div class="column">
+                        <gov2scroll></gov2scroll> 
+                      </div>   
+                    <div class="column is-9">
+                        <gov2pagination 
+                          instance="gov2table" 
+                          :records="records" 
+                          :scroll-interval="scrollInterval"
+                          :item-per-page="itemPerPage"></gov2pagination>
+                      </div>
+                  </div>
+              
+               </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+            	<p>
+                   <strong>Gov 2.0</strong> by Cyber Gov Labs. The source code is licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. 
+                    </p>
+        </div>
+      </div>
+    </footer>
+</div>
+ 
+ <script type="text/javascript">
+  new Vue({
+	    el: '#app',
+    components: {
+	          'gov2table': httpVueLoader('vue/gov2table.vue'),
+            'gov2navbreadcrumb': httpVueLoader('vue/gov2navbreadcrumb.vue'),
+            'gov2notification': httpVueLoader('vue/gov2notification.vue'),
+            'gov2search': httpVueLoader('vue/gov2search.vue'),
+            'gov2scroll': httpVueLoader('vue/gov2scroll.vue'),
+            'gov2pagination': httpVueLoader('vue/gov2pagination.vue'),
+            'gov2itemperpage': httpVueLoader('vue/gov2itemperpage.vue'),
+	           },
+
+	   data () {
+        return {"geturl":"gov2table","isTableActive":"true","records":0,"interval":[1,2,5,10],"isPressed":false,"action":"gov2table","fieldurl":"gov2table\/fields","defaultLevel":1,"pathurl":"\/components\/gov2nav\/breadcrumb\/components\/gov2table\/","scrollInterval":4,"searchQuery":"","itemPerPage":1}
+    },
+    methods: {
+        setItemPerPage: function(data) {this.itemPerPage=data;},toggleClick: function(data) {this.isPressed=data;},pagination: function(data) {this.records=data["records"];this.itemPerPage=data["itemPerPage"];},setQuery: function(data) {this.searchQuery=data;},setItemPerPage: function(data) {this.itemPerPage=data;},
+    },
+    created: function () {
+        eventBus.$on("setItemPerPage", this.setItemPerPage);eventBus.$on("toggleClick", this.toggleClick);eventBus.$on("pagination", this.pagination);eventBus.$on("searchQuery", this.setQuery);eventBus.$on("setItemPerPage", this.setItemPerPage);
+    },
+  });
+</script>
+ 
+  </body>
+</html>
